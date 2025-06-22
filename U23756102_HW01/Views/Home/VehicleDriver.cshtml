@@ -1,0 +1,142 @@
+﻿@model U23756102_HW01.Models.VehicleDriverViewModel
+@using U23756102_HW01.Models;
+
+@{
+    ViewBag.Title = "Vehicle & Driver Management";
+}
+<link href="~/Content/myStyle.css" rel="stylesheet" />
+
+<div class="container my-5">
+
+    <!-- DRIVERS SECTION -->
+    <div class="card shadow-sm mb-5 bg-white">
+        <div class="card-header d-flex justify-content-between align-items-center bg-white text-dark border-bottom">
+            <h4 class="mb-0">Drivers</h4>
+            <a href="/Driver/Create" class="btn btn-custom-create">Create</a>
+        </div>
+
+        <div class="card-body">
+            <!-- FILTERS -->
+            <div class="row gy-2 gx-3 mb-4 align-items-center">
+                <div class="col-md">
+                    <input placeholder="Driver Name" class="form-control bg-white text-dark border-secondary" type="text" id="DriverFirstName" />
+                </div>
+                <div class="col-md">
+                    <select id="ServiceDropdown" name="ServiceID" class="form-select bg-white text-dark border-secondary" asp-for="ServiceID">
+                        <option value="">Service</option>
+                        @foreach (var service in ViewBag.Services)
+                        {
+                            <option value="@service.ServiceID">@service.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-auto">
+                    <button id="btn-Search" class="btn btn-custom-search w-100">Search</button>
+                </div>
+            </div>
+
+            <!-- DRIVERS TABLE -->
+            <div class="table-responsive">
+                <table class="table align-middle" id="drivers">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Image</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Service</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Drivers)
+                        {
+                            var serviceName = ServiceRepository.Services.FirstOrDefault(s => s.ServiceID == item.ServiceID)?.Name ?? "";
+                            <tr data-firstname="@item.FirstName.ToLower()" data-service="@serviceName.ToLower()">
+                                <td><img src="@item.ImagePath" alt="Driver" class="img-thumbnail" width="50" /></td>
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@serviceName</td>
+                                <td>
+                                    @Html.ActionLink("Update", "Edit", "Driver", new { id = item.DriverID }, new { @class = "btn btn-sm btn-custom-edit me-1" })
+                                    @Html.ActionLink("Delete", "Delete", "Driver", new { id = item.DriverID }, new { @class = "btn btn-sm btn-custom-delete" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- VEHICLES SECTION -->
+    <div class="card shadow-sm bg-white">
+        <div class="card-header d-flex justify-content-between align-items-center bg-white text-dark border-bottom">
+            <h4 class="mb-0">Vehicles</h4>
+            <a href="/Vehicle/Create" class="btn btn-custom-create">Create</a>
+        </div>
+
+        <div class="card-body">
+            <!-- VEHICLES TABLE -->
+            <div class="table-responsive">
+                <table class="table  align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Image</th>
+                            <th>Type</th>
+                            <th>Registration</th>
+                            <th>Service</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Vehicles)
+                        {
+                            var serviceName = ServiceRepository.Services.FirstOrDefault(s => s.ServiceID == item.ServiceID)?.Name;
+                            <tr>
+                                <td><img src="@item.ImagePath" alt="Vehicle" class="img-thumbnail" width="100" /></td>
+                                <td>@item.Type</td>
+                                <td>@item.RegistrationNumber</td>
+                                <td>@serviceName</td>
+                                <td>
+                                    @Html.ActionLink("Update", "Edit", "Vehicle", new { id = item.VehicleID }, new { @class = "btn btn-sm btn-custom-edit me-1" })
+                                    @Html.ActionLink("Delete", "Delete", "Vehicle", new { id = item.VehicleID }, new { @class = "btn btn-sm btn-custom-delete" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- EXPORT BUTTON -->
+            <div class="d-flex justify-content-end mt-3">
+                <form method="post" action="@Url.Action("ExportToTextFile", "Vehicle")">
+                    <button type="submit" class="btn btn-primary">Export</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("btn-Search").addEventListener("click", function () {
+            const nameInput = document.getElementById("DriverFirstName").value.trim().toLowerCase();
+            const serviceInput = document.getElementById("ServiceDropdown").value;
+            const serviceName = document.querySelector(`#ServiceDropdown option[value="${serviceInput}"]`)?.textContent.toLowerCase();
+
+            const rows = document.querySelectorAll("#drivers tbody tr");
+
+            rows.forEach(row => {
+                const rowName = row.getAttribute("data-firstname");
+                const rowService = row.getAttribute("data-service");
+
+                const nameMatches = !nameInput || rowName.includes(nameInput);
+                const serviceMatches = !serviceInput || rowService === serviceName;
+
+                row.style.display = (nameMatches && serviceMatches) ? "" : "none";
+            });
+        });
+    </script>
+}

@@ -1,0 +1,57 @@
+﻿@model U23756102_HW01.Models.Driver
+
+@{
+    ViewBag.Title = "Create Driver";
+}
+
+<div class="container my-5 bg-dark text-white" style="max-width: 600px;">
+    <h2 class="mb-4 text-center">Create Driver</h2>
+
+    @using (Html.BeginForm("Create", "Driver", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="bg-dark text-white shadow rounded p-4">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.FirstName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter first name" } })
+                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.LastName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter last name" } })
+                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label for="ImageFile" class="form-label">Upload Image</label>
+                <input type="file" name="ImageFile" class="form-control" accept="image/*" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="ImageFile" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.PhoneNumber, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter phone number" } })
+                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-4">
+                <label for="ServiceID" class="form-label">Select Service</label>
+                <select id="ServiceID" name="ServiceID" class="form-select" asp-for="ServiceID" required>
+                    <option value="" disabled selected>Select a service</option>
+                    @foreach (var service in ViewBag.Services)
+                    {
+                        <option value="@service.ServiceID">@service.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-secondary btn-lg">Create Driver</button>
+            </div>
+        </div>
+    }
+</div>

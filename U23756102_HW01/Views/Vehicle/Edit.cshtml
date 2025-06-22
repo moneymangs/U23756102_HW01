@@ -1,0 +1,53 @@
+﻿@model U23756102_HW01.Models.Vehicle
+
+@{
+    ViewBag.Title = "Edit Vehicle";
+}
+
+<div class="container my-5 text-white" style="max-width: 600px;">
+    <h2 class="mb-4 text-center">Edit Vehicle</h2>
+
+    @using (Html.BeginForm("Edit", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="bg-white shadow rounded p-4">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+            @Html.HiddenFor(model => model.VehicleID)
+            @Html.HiddenFor(model => model.ImagePath)
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Type, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(m => m.Type, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter vehicle type" } })
+                @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.RegistrationNumber, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(m => m.RegistrationNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter registration number" } })
+                @Html.ValidationMessageFor(m => m.RegistrationNumber, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label for="ImageFile" class="form-label">Upload Image</label>
+                <input type="file" name="ImageFile" class="form-control" accept="image/*" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="ImageFile" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="mb-4">
+                <label for="ServiceID" class="form-label">Select Service</label>
+                <select id="ServiceID" name="ServiceID" class="form-select" asp-for="ServiceID" required>
+                    <option value="" disabled>Select a service</option>
+                    @foreach (var service in ViewBag.Services)
+                    {
+                        <option value="@service.ServiceID" @(Model.ServiceID == service.ServiceID ? "selected" : "")>@service.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-secondary btn-lg">Save Changes</button>
+            </div>
+        </div>
+    }
+</div>

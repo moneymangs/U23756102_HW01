@@ -1,0 +1,66 @@
+﻿@model U23756102_HW01.Models.BookingConfirmedViewModel
+
+@{
+    ViewBag.Title = "Booking Confirmed";
+}
+
+<h2 class="text-center my-4 text-light">Booking Confirmed ✅</h2>
+
+
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col-auto text-center">
+            <h3 class="text-success">Your booking has been confirmed!</h3>
+        </div>
+    </div>
+
+    @*This will assist me in in the creation of 3 column layout*@
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        <div class="col">
+            <div class="card shadow-sm h-100 bg-white text-dark">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Booking Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Booking ID:</strong> @Model.Booking.BookingID</p>
+                    <p><strong>Date Booked:</strong> @Model.Booking.BookingDate</p>
+                    <p><strong>Pickup Time:</strong> @Model.Booking.PickupTime.ToString("g")</p>
+                    <p><strong>Pickup Address:</strong> @Model.Booking.PickupAddress</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center bg-white text-dark">
+                <div class="p-3">
+                    <div class="ratio ratio-1x1 mx-auto" style="max-width: 120px;">
+                        <img src="@Url.Content(Model.Driver.ImagePath)" class="rounded-circle object-fit-cover w-100 h-100 border border-light" alt="Driver Image" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Driver Details</h5>
+                    <p><strong>Name:</strong> @Model.Driver.FirstName</p>
+                    <p><strong>Phone Number:</strong> @Model.Driver.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Card -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm text-center bg-white text-dark">
+                <div class="p-3">
+                    <div class="ratio ratio-1x1 mx-auto" style="max-width: 120px;">
+                        <img src="@Url.Content(Model.Vehicle.ImagePath)" class="rounded-circle object-fit-cover w-100 h-100 border border-light" alt="Vehicle Image" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Ambulance Details</h5>
+                    <p><strong>Type:</strong> @Model.Vehicle.Type</p>
+                    <p><strong>Registration Number:</strong> @Model.Vehicle.RegistrationNumber</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

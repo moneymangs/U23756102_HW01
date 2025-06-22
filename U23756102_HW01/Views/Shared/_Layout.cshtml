@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="background: linear-gradient(135deg, #2c3035, #1f2226);; font-family: 'Poppins', sans-serif; ">
+    <div class="container-fluid bg-dark shadow-sm">
+        <header class="container d-flex flex-wrap align-items-center justify-content-between py-3 border-bottom border-secondary">
+            
+            <a href="/" class="text-light text-decoration-none fs-4 fw-bold">
+                RescueBus
+            </a>
+
+            <!-- Nav Links -->
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a href="/Home/Index" class="nav-link text-light px-3 fw-semibold" aria-current="page">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Home/RideHistory" class="nav-link text-light px-3 fw-semibold">Ride History</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Home/VehicleDriver" class="nav-link text-light px-3 fw-semibold">Manage</a>
+                </li>
+            </ul>
+        </header>
+    </div>
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
